@@ -1,0 +1,21 @@
+#oceanembed-predict-cta {
+  position: fixed;
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+  padding: 13px 20px;
+  border: 1px solid rgba(255,255,255,.75);
+  border-radius: 2px;
+  background: rgba(10,24,31,.88);
+  color: #f4fbff;
+  font: 600 12px/1.2 Arial, sans-serif;
+  letter-spacing: .16em;
+  text-decoration: none;
+  box-shadow: 0 0 24px rgba(70,190,220,.2);
+}
+#oceanembed-predict-cta:hover, #oceanembed-predict-cta:focus-visible {
+  background: #d9f3f5;
+  color: #10252b;
+  outline: 2px solid #d9f3f5;
+  outline-offset: 3px;
+}
+#oceanembed-predict-cta[hidden] { display: none; }

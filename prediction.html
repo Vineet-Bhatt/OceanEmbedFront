@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07141b">
+  <title>OceanEmbed | Prediction</title>
+  <link rel="stylesheet" href="prediction.css">
+</head>
+<body>
+  <main class="page-shell">
+    <a class="back-link" href="index.html">? Back to OceanEmbed</a>
+    <header class="hero">
+      <p class="eyebrow">OCEANEMBED ? PROFILE RECONSTRUCTION</p>
+      <h1>Explore a subsurface temperature profile</h1>
+      <p class="intro">Select a day and a point in the North Indian Ocean. The prototype is designed to reconstruct temperature through the water column from seven days of satellite and ocean surface observations.</p>
+    </header>
+    <section class="panel" aria-labelledby="request-title">
+      <div class="panel-heading"><div><p class="eyebrow">MODEL INPUT</p><h2 id="request-title">Choose a location and date</h2></div><span class="grid-tag">0.25? DAILY GRID</span></div>
+      <form id="prediction-form">
+        <label>Latitude (5?N?30?N)<input name="latitude" type="number" min="5" max="30" step="0.25" value="15" required></label>
+        <label>Longitude (45?E?105?E)<input name="longitude" type="number" min="45" max="105" step="0.25" value="75" required></label>
+        <label class="date-field">Target date<input name="date" type="date" required></label>
+        <button type="submit">CHECK PROFILE AVAILABILITY <span aria-hidden="true">?</span></button>
+      </form>
+      <p id="status" class="status" role="status" aria-live="polite">This local prototype has no connected inference service, so it cannot return a live profile yet.</p>
+    </section>
+    <section class="facts" aria-label="Prototype details">
+      <article><span>INPUT WINDOW</span><strong>7 days</strong><p>SST, salinity, sea level, currents and winds.</p></article>
+      <article><span>PROFILE OUTPUT</span><strong>15 depths</strong><p>Temperature levels from the surface to 1,000 m.</p></article>
+      <article><span>VALIDATION STATUS</span><strong>Prototype</strong><p>Jan 2024 split: mean RMSE 0.415?C and mean R? 0.923. Extended chronological and Argo validation are planned.</p></article>
+    </section>
+    <footer>Multi-horizon forecasting is planned for a later phase; it is not available in this prototype.</footer>
+  </main>
+  <script>
+    const form = document.getElementById('prediction-form');
+    const status = document.getElementById('status');
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      status.textContent = 'Selection: ' + form.elements.latitude.value + ' N, ' + form.elements.longitude.value + ' E on ' + form.elements.date.value + '. No live profile is available until the model inference service is connected.';
+      status.classList.add('status-notice');
+    });
+  </script>
+</body>
+</html>
