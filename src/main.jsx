@@ -3,6 +3,13 @@ import { createRoot } from 'react-dom/client';
 
 const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:8000').replace(/\/$/, '');
 
+const params = new URLSearchParams(window.location.search);
+const initial = {
+  latitude: params.get('latitude') || '15',
+  longitude: params.get('longitude') || '75',
+  date: params.get('date') || new Date().toISOString().slice(0, 10),
+};
+
 function App() {
   const [status, setStatus] = useState('Choose a location and date to request a temperature profile.');
   const [busy, setBusy] = useState(false);
@@ -49,9 +56,9 @@ function App() {
     <section className="panel" aria-labelledby="request-title">
       <div className="panel-heading"><div><p className="eyebrow">MODEL INPUT</p><h2 id="request-title">Choose a location and date</h2></div><span className="grid-tag">0.25&deg; DAILY GRID</span></div>
       <form id="prediction-form" onSubmit={submit}>
-        <label>Latitude (5&deg;N to 30&deg;N)<input name="latitude" type="number" min="5" max="30" step="0.25" defaultValue="15" required /></label>
-        <label>Longitude (45&deg;E to 105&deg;E)<input name="longitude" type="number" min="45" max="105" step="0.25" defaultValue="75" required /></label>
-        <label className="date-field">Target date<input name="date" type="date" defaultValue={new Date().toISOString().slice(0, 10)} required /></label>
+        <label>Latitude (5&deg;N to 30&deg;N)<input name="latitude" type="number" min="5" max="30" step="0.25" defaultValue={initial.latitude} required /></label>
+        <label>Longitude (45&deg;E to 105&deg;E)<input name="longitude" type="number" min="45" max="105" step="0.25" defaultValue={initial.longitude} required /></label>
+        <label className="date-field">Target date<input name="date" type="date" defaultValue={initial.date} required /></label>
         <button type="submit" disabled={busy}>{busy ? 'REQUESTING PROFILE…' : 'PREDICT TEMPERATURE PROFILE'} <span aria-hidden="true">&rarr;</span></button>
       </form>
       <p className="status status-notice" role="status" aria-live="polite">{status}</p>

@@ -19,3 +19,15 @@
   outline-offset: 3px;
 }
 #oceanembed-predict-cta[hidden] { display: none; }
+
+/* Zoom transition: Predict CTA -> satellite prediction page */
+#oceanembed-zoom-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 20000;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 58%, rgba(70,190,220,.35), #07141b 70%);
+}
+.oceanembed-zooming #oceanembed-predict-cta { display: none; }
+#application-canvas { will-change: transform; }

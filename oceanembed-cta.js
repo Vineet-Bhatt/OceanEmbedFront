@@ -5,6 +5,54 @@
   var hover;
   var canvas;
   var lastCard = null;
+  var leaving = false;
+
+  var TARGET = 'satellite-predict.html';
+  var ZOOM_SECONDS = 1.1;
+
+  // Zoom the satellite scene in toward the viewer, fade to the page background,
+  // then open the new prediction home page.
+  function zoomAndGo(href) {
+    if (leaving) return;
+    leaving = true;
+    link.hidden = true;
+    canvas.style.cursor = '';
+
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || !window.gsap) {
+      window.location.href = href;
+      return;
+    }
+
+    var veil = document.createElement('div');
+    veil.id = 'oceanembed-zoom-veil';
+    document.body.appendChild(veil);
+
+    document.documentElement.classList.add('oceanembed-zooming');
+    window.gsap.to(canvas, {
+      scale: 2.4,
+      duration: ZOOM_SECONDS,
+      ease: 'power3.in',
+      transformOrigin: '50% 58%'
+    });
+    window.gsap.to(veil, {
+      opacity: 1,
+      duration: ZOOM_SECONDS * 0.55,
+      delay: ZOOM_SECONDS * 0.45,
+      ease: 'power1.in',
+      onComplete: function () { window.location.href = href; }
+    });
+  }
+
+  // If the browser restores this page from the back/forward cache, undo the zoom.
+  window.addEventListener('pageshow', function (event) {
+    if (!event.persisted || !leaving) return;
+    leaving = false;
+    var veil = document.getElementById('oceanembed-zoom-veil');
+    if (veil) veil.remove();
+    document.documentElement.classList.remove('oceanembed-zooming');
+    if (window.gsap && canvas) window.gsap.set(canvas, { clearProps: 'transform' });
+  });
 
   function attach() {
     app = window.__oceanEmbedApp;
@@ -16,13 +64,20 @@
 
     link = document.createElement('a');
     link.id = 'oceanembed-predict-cta';
-    link.href = 'prediction.html';
+    link.href = TARGET;
     link.textContent = 'PREDICT';
     link.setAttribute('aria-label', 'Open the OceanEmbed prediction page');
     link.hidden = true;
+    link.addEventListener('click', function (event) {
+      // Keep modified clicks (new tab, etc.) working normally.
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.button) return;
+      event.preventDefault();
+      zoomAndGo(link.href);
+    });
     document.body.appendChild(link);
 
     function updateHover(event) {
+      if (leaving) return;
       if (event && hover._onMove) hover._onMove(event);
       if (hover.update) hover.update();
       var selected = hover._current && hover._current.entity && hover._current.entity.name === 'card4';
@@ -40,6 +95,7 @@
 
     canvas.addEventListener('pointermove', updateHover, { passive: true });
     canvas.addEventListener('pointerleave', function () {
+      if (leaving) return;
       hover._hasMouse = false;
       if (hover.update) hover.update();
       link.hidden = true;
@@ -47,11 +103,11 @@
     });
     canvas.addEventListener('pointerdown', function (event) {
       updateHover(event);
-      if (lastCard && event.pointerType !== 'mouse') window.location.href = link.href;
+      if (lastCard && event.pointerType !== 'mouse') zoomAndGo(link.href);
     });
     canvas.addEventListener('click', function (event) {
       updateHover(event);
-      if (lastCard) window.location.href = link.href;
+      if (lastCard) zoomAndGo(link.href);
     });
     window.addEventListener('resize', function () { updateHover(); });
     app.on('update', function () { updateHover(); });

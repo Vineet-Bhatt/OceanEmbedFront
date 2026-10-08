@@ -1,0 +1,81 @@
+#oceanembed-params {
+  position: fixed;
+  z-index: 10000;
+  left: 50%;
+  bottom: clamp(18px, 5vh, 48px);
+  transform: translateX(-50%);
+  width: min(760px, calc(100% - 28px));
+  padding: 18px 20px 20px;
+  border: 1px solid rgba(189,224,229,.22);
+  background: rgba(10,24,31,.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #eaf3f4;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  box-shadow: 0 0 40px rgba(70,190,220,.18);
+}
+#oceanembed-params .eyebrow {
+  margin: 0 0 4px;
+  color: #8ecdd4;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .18em;
+}
+#oceanembed-params h1 {
+  margin: 0 0 14px;
+  font-size: 20px;
+  font-weight: 550;
+  letter-spacing: -.01em;
+}
+#oceanembed-params form {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr) auto;
+  gap: 12px;
+  align-items: end;
+}
+#oceanembed-params label {
+  display: grid;
+  gap: 7px;
+  color: #aabdc1;
+  font-size: 12px;
+}
+#oceanembed-params input {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  color: #eff8f8;
+  background: #091921;
+  border: 1px solid rgba(189,224,229,.2);
+  border-radius: 0;
+  font: inherit;
+}
+#oceanembed-params input:focus { outline: 2px solid #8ecdd4; outline-offset: 1px; }
+#oceanembed-params button {
+  min-height: 44px;
+  padding: 0 20px;
+  border: 0;
+  color: #07141b;
+  background: #a9e0e4;
+  font: 750 11px/1 Arial, sans-serif;
+  letter-spacing: .13em;
+  cursor: pointer;
+}
+#oceanembed-params button:hover, #oceanembed-params button:focus-visible { background: #d7f4f5; }
+#oceanembed-back {
+  position: fixed;
+  z-index: 10000;
+  top: 18px;
+  left: 18px;
+  padding: 10px 14px;
+  border: 1px solid rgba(189,224,229,.22);
+  background: rgba(10,24,31,.82);
+  color: #9cdce2;
+  font: 13px Arial, sans-serif;
+  text-decoration: none;
+}
+#oceanembed-back:hover, #oceanembed-back:focus-visible { color: #fff; }
+@media (max-width: 700px) {
+  #oceanembed-params form { grid-template-columns: 1fr 1fr; }
+  #oceanembed-params .date-field { grid-column: 1 / -1; }
+  #oceanembed-params button { grid-column: 1 / -1; }
+}
