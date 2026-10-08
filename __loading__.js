@@ -20,8 +20,8 @@
     // a normal first-run load.
     var IS_REPLAY = false;
     try {
-        IS_REPLAY = sessionStorage.getItem('edolusReplay') === '1';
-        if (IS_REPLAY) sessionStorage.removeItem('edolusReplay');
+        IS_REPLAY = (sessionStorage.getItem('oceanEmbedReplay') || sessionStorage.getItem('edolusReplay')) === '1';
+        if (IS_REPLAY) sessionStorage.removeItem('oceanEmbedReplay'); sessionStorage.removeItem('edolusReplay');
     } catch (e) {}
 
     var REVEAL_MIN_MS    = IS_REPLAY ? 0 : 3000;  // min time fully black (0 on replay â the logo draw still gates the reveal)
@@ -129,7 +129,7 @@
         // while loading, and stays on top while the bands open beneath it.
         var logo = document.createElement('div');
         logo.id = 'custom-splash-logo';
-        logo.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 54" role="img" aria-label="OceanEmbed"><text x="0" y="42" fill="white" font-family="Arial, sans-serif" font-size="42" font-weight="700" letter-spacing="5">OCEANEMBED</text></svg>';
+        logo.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 155 28" role="img" aria-label="OceanEmbed"><g fill="white"><text x="1" y="20" font-family="Arial, sans-serif" font-size="20" font-weight="700" letter-spacing="0.6">OCEANEMBED</text></g></svg>';
         wrapper.appendChild(logo);
 
         // Hide the glyph fills from the very first frame so the logo never
@@ -184,7 +184,7 @@
         wrapper.appendChild(titleGroup);
 
         // Bottom notice: headphones icon + a subtitle-styled line, pinned to the BOTTOM
-        // with the same inset the Edolus logo sits from the TOP (OVERLAY_DEFAULTS.top).
+        // with the same inset the OceanEmbed wordmark sits from the TOP (OVERLAY_DEFAULTS.top).
         // Fades in / out with the title group (see the .loaded / .clicked rules).
         var headphones = document.createElement('div');
         headphones.id = 'custom-headphones';
@@ -1090,7 +1090,7 @@
             '}',
 
             /* BOTTOM NOTICE â headphones icon + a subtitle-styled line, pinned to the
-               bottom with the same inset the Edolus logo has from the top (40 / 20 px). */
+               bottom with the same inset the OceanEmbed wordmark has from the top (40 / 20 px). */
             '#custom-headphones {',
             '    position: absolute;',
             // Full width + flex-centre (NOT left:50% + translateX): a left:50% abs box with
